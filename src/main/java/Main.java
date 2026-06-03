@@ -35,6 +35,8 @@ public class Main {
                  String trimmedInput = input.substring(5);
                  if(COMMANDS.containsValue(trimmedInput)) {
                      System.out.println(trimmedInput + " is a shell builtin");
+                 } else {
+                     System.out.println(trimmedInput + ": not found");
                  }
              }
              else{
