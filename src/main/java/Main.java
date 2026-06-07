@@ -2,6 +2,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -38,27 +39,42 @@ public class Main {
                  System.out.println(input.substring(5));
              }
              else if(input.startsWith(COMMANDS.TYPE.getValue() + " ")){
-                 String trimmedInput = input.substring(5);
-                 if(COMMANDS.containsValue(trimmedInput)) {
-                     System.out.println(trimmedInput + " is a shell builtin");
-                 } else {
-                     String dirList = System.getenv(PATH);
-                     boolean pathFound = false;
-                     Path path = null;
-                     for(String dir : dirList.split(File.pathSeparator)){
-                         path = Path.of(dir, trimmedInput);
-                         if(Files.isExecutable(path)){
-                             pathFound = true;
-                             break;
-                         }
-                     }
-                     if(pathFound) System.out.println(trimmedInput + " is " + path);
-                     else System.out.println(trimmedInput + ": not found");
-                 }
+                 handleType(input);
              }
              else{
+                 String[] inputParts = input.split(" ");
+                 String command = inputParts[0];
+                 Path executablePath =  findExecutable(command);
+                 if(Objects.nonNull(executablePath)) {
+                     // create a new process and run the file at executablePath with parameters in inputParts
+                     Process process = Runtime.getRuntime().exec(executablePath.toString());
+                     process.getInputStream().transferTo(System.out);
+                 }
                  System.out.println(input + ": command not found");
              }
          }
+    }
+
+    private static void handleType(String input) {
+        String trimmedInput = input.substring(5);
+        if(COMMANDS.containsValue(trimmedInput)) {
+            System.out.println(trimmedInput + " is a shell builtin");
+        } else {
+            Path path = findExecutable(trimmedInput);
+            if(Objects.nonNull(path)) System.out.println(trimmedInput + " is " + path);
+            else System.out.println(trimmedInput + ": not found");
+        }
+    }
+
+    private static Path findExecutable(String fileName) {
+        String dirList = System.getenv(PATH);
+
+        for(String dir : dirList.split(File.pathSeparator)){
+            Path path = Path.of(dir, fileName);
+            if(Files.isExecutable(path)){
+                return path.toAbsolutePath();
+            }
+        }
+        return null;
     }
 }
