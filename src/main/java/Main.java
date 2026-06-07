@@ -47,10 +47,10 @@ public class Main {
                  Path executablePath =  findExecutable(command);
                  if(Objects.nonNull(executablePath)) {
                      // create a new process and run the file at executablePath with parameters in inputParts
-                     Process process = Runtime.getRuntime().exec(executablePath.toString());
+                     Process process = Runtime.getRuntime().exec(input.split(" "));
                      process.getInputStream().transferTo(System.out);
                  }
-                 System.out.println(input + ": command not found");
+                 else System.out.println(input + ": command not found");
              }
          }
     }
