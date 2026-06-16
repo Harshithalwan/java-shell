@@ -12,7 +12,8 @@ public class Main {
     enum COMMANDS {
         EXIT("exit"),
         ECHO("echo"),
-        TYPE("type");
+        TYPE("type"),
+        PWD("pwd");
 
         private final String value;
         COMMANDS(String s) {
@@ -27,7 +28,7 @@ public class Main {
         }
     }
     public static void main(String[] args) throws Exception {
-        // TODO: Uncomment the code below to pass the first stage
+
          Scanner scanner = new Scanner(System.in);
          while(true){
              System.out.print("$ ");
@@ -40,6 +41,9 @@ public class Main {
              }
              else if(input.startsWith(COMMANDS.TYPE.getValue() + " ")){
                  handleType(input);
+             }
+             else if(input.startsWith(COMMANDS.PWD.getValue())){
+                 System.out.println(System.getProperty("user.dir"));
              }
              else{
                  String[] inputParts = input.split(" ");
