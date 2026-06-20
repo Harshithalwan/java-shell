@@ -34,6 +34,7 @@ public class Main {
          while(true){
              System.out.print("$ ");
              String input = scanner.nextLine();
+             if(input.isEmpty()) continue;
              String split[] = input.split(" ", 2);
              String cmd = split.length > 0 ? split[0] : "";
              String parameters = split.length > 1 ? split[1] : "";
@@ -52,7 +53,7 @@ public class Main {
              else if(input.startsWith(COMMANDS.CD.getValue() + " ")){
                  String cwd = System.getProperty("user.dir");
                  File file = new File(parameters);
-                 if(file.isDirectory() && file.isAbsolute()) cwd = file.getAbsolutePath();
+                 if(file.isDirectory() && file.isAbsolute()) System.setProperty("user.dir", file.getAbsolutePath());
                  else System.out.println("cd: " + parameters + ": No such file or directory");
              }
              else{
