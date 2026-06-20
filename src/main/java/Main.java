@@ -13,7 +13,8 @@ public class Main {
         EXIT("exit"),
         ECHO("echo"),
         TYPE("type"),
-        PWD("pwd");
+        PWD("pwd"),
+        CD("cd");
 
         private final String value;
         COMMANDS(String s) {
@@ -33,6 +34,9 @@ public class Main {
          while(true){
              System.out.print("$ ");
              String input = scanner.nextLine();
+             String split[] = input.split(" ", 2);
+             String cmd = split[0];
+             String parameters = split[1];
              if(input.equals(COMMANDS.EXIT.getValue())){
                  break;
              }
@@ -44,6 +48,12 @@ public class Main {
              }
              else if(input.startsWith(COMMANDS.PWD.getValue())){
                  System.out.println(System.getProperty("user.dir"));
+             }
+             else if(input.startsWith(COMMANDS.CD.getValue() + " ")){
+                 String cwd = System.getProperty("user.dir");
+                 File file = new File(parameters);
+                 if(file.isDirectory() && file.isAbsolute()) cwd = file.getAbsolutePath();
+                 else System.out.println("cd: " + parameters + ": No such file or directory");
              }
              else{
                  String[] inputParts = input.split(" ");
