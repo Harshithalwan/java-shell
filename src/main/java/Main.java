@@ -35,8 +35,8 @@ public class Main {
              System.out.print("$ ");
              String input = scanner.nextLine();
              String split[] = input.split(" ", 2);
-             String cmd = split[0];
-             String parameters = split[1];
+             String cmd = split.length > 0 ? split[0] : "";
+             String parameters = split.length > 1 ? split[1] : "";
              if(input.equals(COMMANDS.EXIT.getValue())){
                  break;
              }
