@@ -53,8 +53,9 @@ public class Main {
              else if(input.startsWith(COMMANDS.CD.getValue() + " ")){
                  String cwd = System.getProperty("user.dir");
                  File file = new File(parameters);
-                 if(file.isDirectory() && file.isAbsolute()) System.setProperty("user.dir", file.getAbsolutePath());
-                 else if (file.isDirectory() && !file.isAbsolute()) System.setProperty("user.dir", file.getPath());
+                 if(file.isDirectory()) System.setProperty("user.dir", file.getAbsolutePath());
+                 // Handle relative paths
+//                 else if (file.isDirectory() && !file.isAbsolute()) System.setProperty("user.dir", file.getPath());
                  else System.out.println("cd: " + parameters + ": No such file or directory");
              }
              else{
