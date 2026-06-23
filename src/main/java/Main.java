@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -54,7 +55,9 @@ public class Main {
              else if(input.startsWith(COMMANDS.CD.getValue() + " ")){
                  String cwd = System.getProperty("user.dir");
                  Path path = Paths.get(cwd).resolve(parameters).normalize();
-                 if(parameters.equals("~")) System.setProperty("user.dir", System.getProperty("user.home"));
+                 // Windows store home in user.home, Linux in environment variable "HOME"
+                 if(parameters.equals("~")) System.setProperty("user.dir", Optional.ofNullable(System.getenv("HOME"))
+                         .orElse(System.getProperty("user.home")));
                  // There's no proper way to change directory in Java, Here we're setting the user.dir property buy it's no full proof.
                  else if (path.toFile().isDirectory()) System.setProperty("user.dir", path.toString());
                  else System.out.println("cd: " + parameters + ": No such file or directory");
