@@ -1,6 +1,7 @@
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
@@ -52,10 +53,9 @@ public class Main {
              }
              else if(input.startsWith(COMMANDS.CD.getValue() + " ")){
                  String cwd = System.getProperty("user.dir");
+                 Path path = Paths.get(cwd).resolve(parameters).normalize();
                  File file = new File(parameters);
-                 if(file.isDirectory()) System.setProperty("user.dir", file.getAbsolutePath());
-                 // Handle relative paths
-//                 else if (file.isDirectory() && !file.isAbsolute()) System.setProperty("user.dir", file.getPath());
+                 if (path.toFile().isDirectory()) System.setProperty("user.dir", path.toString());
                  else System.out.println("cd: " + parameters + ": No such file or directory");
              }
              else{
